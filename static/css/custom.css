@@ -1,0 +1,340 @@
+/* Custom CSS for Waste Classification App */
+
+/* Global styling */
+:root {
+    --primary-glow: rgba(0, 123, 255, 0.15);
+    --secondary-glow: rgba(108, 117, 125, 0.15);
+    --success-glow: rgba(40, 167, 69, 0.15);
+    --info-glow: rgba(23, 162, 184, 0.15);
+    --warning-glow: rgba(255, 193, 7, 0.15);
+    --danger-glow: rgba(220, 53, 69, 0.15);
+    --dark-blur: rgba(52, 58, 64, 0.8);
+    --card-radius: 0.5rem;
+    --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    --transition-speed: 0.3s;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Basic body styling */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #121212;
+    background-image: radial-gradient(circle at 50% 50%, #1c1c1c 0%, #121212 100%);
+    background-attachment: fixed;
+}
+
+/* Main content area */
+main {
+    flex: 1;
+    padding: 1.5rem 0;
+}
+
+/* Enhanced card styling */
+.card {
+    border: none;
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    transition: transform var(--transition-speed) ease, 
+                box-shadow var(--transition-speed) ease,
+                opacity var(--transition-speed) ease;
+    overflow: hidden;
+    backdrop-filter: blur(3px);
+    background-color: rgba(33, 37, 41, 0.9);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Enhanced card headers */
+.card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    padding: 0.8rem 1.25rem;
+}
+
+/* Image styling */
+.img-thumbnail {
+    object-fit: contain;
+    max-height: 300px;
+    border-radius: var(--card-radius);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: border-color var(--transition-speed) ease;
+}
+
+.img-thumbnail:hover {
+    border-color: var(--bs-primary);
+}
+
+/* Enhanced loading spinner */
+.spinner-border {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-width: 0.3em;
+    animation-duration: 1.2s;
+    color: var(--bs-primary);
+}
+
+/* Form control enhancements */
+.form-control {
+    background-color: rgba(33, 37, 41, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--card-radius);
+    transition: all var(--transition-speed) ease;
+}
+
+.form-control:focus {
+    background-color: rgba(33, 37, 41, 0.9);
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem var(--primary-glow);
+}
+
+/* Button styling */
+.btn {
+    border-radius: var(--card-radius);
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    transition: all var(--transition-speed) ease;
+}
+
+.btn-primary {
+    box-shadow: 0 2px 10px var(--primary-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--primary-glow);
+}
+
+/* Waste type icons styling */
+#wasteTypeIcon i {
+    font-size: 4.5rem;
+    filter: drop-shadow(0 0 10px currentColor);
+    transition: transform 0.5s ease;
+}
+
+#wasteTypeIcon i:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Custom waste type text colors */
+.text-blue {
+    color: #007bff !important;
+}
+
+/* Enhanced history list */
+#historyList .list-group-item {
+    background-color: rgba(33, 37, 41, 0.7);
+    border-color: rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-speed) ease;
+    margin-bottom: 0.5rem;
+    border-radius: var(--card-radius);
+}
+
+#historyList .list-group-item:hover {
+    background-color: rgba(52, 58, 64, 0.9);
+    transform: translateX(5px);
+}
+
+/* Quick fact cards styling */
+.quick-fact {
+    padding: 1rem;
+    border-radius: var(--card-radius);
+    background-color: rgba(33, 37, 41, 0.5);
+    margin-bottom: 1rem;
+    transition: all var(--transition-speed) ease;
+    border-left: 3px solid transparent;
+}
+
+.quick-fact:hover {
+    background-color: rgba(33, 37, 41, 0.8);
+    transform: translateX(5px);
+}
+
+.quick-fact:nth-child(1) {
+    border-left-color: var(--bs-success);
+}
+
+.quick-fact:nth-child(2) {
+    border-left-color: var(--bs-primary);
+}
+
+.quick-fact:nth-child(3) {
+    border-left-color: var(--bs-info);
+}
+
+/* Custom badge styling */
+.badge {
+    font-weight: 600;
+    padding: 0.4em 0.8em;
+    border-radius: 30px;
+    transition: all var(--transition-speed) ease;
+}
+
+/* Enhanced navbar */
+.navbar {
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(33, 37, 41, 0.95) !important;
+    backdrop-filter: blur(5px);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.navbar-brand i {
+    color: var(--bs-primary);
+}
+
+/* Footer styling */
+footer {
+    background-color: rgba(33, 37, 41, 0.95) !important;
+    backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.5rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    
+    #wasteTypeIcon i {
+        font-size: 3.5rem;
+    }
+    
+    .card-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .navbar {
+        padding: 0.8rem 0;
+    }
+    
+    main {
+        padding: 1rem 0;
+    }
+}
+
+/* Animation for result display */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#resultContent {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Animation for confidence badges */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.badge {
+    animation: pulse 2s infinite;
+}
+
+/* Particles background */
+.particles-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(1px);
+    opacity: 0.7;
+    animation: float 15s infinite linear;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-25vh) translateX(15vw) rotate(120deg);
+    }
+    66% {
+        transform: translateY(10vh) translateX(-10vw) rotate(240deg);
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(360deg);
+    }
+}
+
+/* Branding styles */
+.brand-icon {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 123, 255, 0.1);
+    color: var(--bs-primary);
+    font-size: 1.2rem;
+}
+
+.brand-icon:after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    border-radius: 50%;
+    border: 2px solid var(--bs-primary);
+    opacity: 0.3;
+    animation: pulse 2s infinite;
+}
+
+/* Custom animation for recycle icon */
+.fa-bounce {
+    animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
