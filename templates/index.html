@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Waste Classification App - Upload & Classify</title>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-7">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark">
+                <h2 class="h4 mb-0"><i class="fas fa-upload me-2"></i>Upload Waste Image</h2>
+            </div>
+            <div class="card-body">
+                <p class="card-text mb-4">Take a picture or upload an image of a waste item to classify it and learn how to properly dispose of it.</p>
+
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="materialInput" class="form-label">Material Description</label>
+                        <input class="form-control" type="text" id="materialInput" placeholder="Enter material type (e.g., plastic bottle, cardboard box)" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="imageInput" class="form-label">Upload Image</label>
+                        <input class="form-control" type="file" id="imageInput" accept="image/*" required>
+                        <div class="form-text">Accepted formats: JPG, PNG, GIF</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div id="imagePreview" class="d-none">
+                            <p>Image preview:</p>
+                            <img src="" alt="Preview" class="img-fluid img-thumbnail mb-3" style="max-height: 300px;">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary" id="classifyBtn">
+                            <i class="fas fa-search me-2"></i>Classify Waste
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="resultCard" class="card shadow-sm mb-4 d-none">
+            <div class="card-header bg-dark">
+                <h2 class="h4 mb-0"><i class="fas fa-info-circle me-2"></i>Classification Result</h2>
+            </div>
+            <div class="card-body">
+                <div id="loadingSpinner" class="text-center my-5 d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Analyzing your waste image...</p>
+                </div>
+
+                <div id="resultContent" class="d-none">
+                    <div class="text-center mb-4">
+                        <span id="wasteTypeIcon" class="display-1 mb-3">
+                            <i class="fas fa-recycle"></i>
+                        </span>
+                        <h3 id="wasteType" class="mt-2">Waste Type</h3>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header bg-dark">
+                            <h4 class="h6 mb-0">Description</h4>
+                        </div>
+                        <div class="card-body">
+                            <p id="wasteDescription" class="mb-0">Description will appear here.</p>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header bg-dark">
+                            <h4 class="h6 mb-0">Proper Disposal</h4>
+                        </div>
+                        <div class="card-body">
+                            <p id="wasteDisposal" class="mb-0">Disposal instructions will appear here.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header bg-dark">
+                            <h4 class="h6 mb-0">Environmental Impact</h4>
+                        </div>
+                        <div class="card-body">
+                            <p id="wasteImpact" class="mb-0">Impact information will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+                    An error occurred while processing your image.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <!-- Recycling Locations -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark">
+                <h2 class="h4 mb-0"><i class="fas fa-map-marker-alt me-2"></i>Recycling Locations</h2>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="locationInput" class="form-label">Find Nearby Recycling Centers</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="locationInput" placeholder="Enter your location">
+                        <button class="btn btn-primary" type="button" onclick="findRecyclingCenters()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="recyclingLocations" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Additional Resources -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark">
+                <h2 class="h4 mb-0"><i class="fas fa-book-reader me-2"></i>Recycling Resources</h2>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-graduation-cap me-2 text-primary"></i>
+                            <h5 class="mb-0">Recycling Guidelines</h5>
+                        </div>
+                        <ul class="list-unstyled mb-0 ms-4">
+                            <li><i class="fas fa-check text-success me-2"></i>Material sorting guide</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Contamination prevention</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Preparation instructions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-calendar-alt me-2 text-warning"></i>
+                            <h5 class="mb-0">Collection Schedule</h5>
+                        </div>
+                        <ul class="list-unstyled mb-0 ms-4">
+                            <li><i class="fas fa-truck me-2"></i>Pickup dates and zones</li>
+                            <li><i class="fas fa-bell me-2"></i>Reminder notifications</li>
+                            <li><i class="fas fa-map-marker-alt me-2"></i>Drop-off locations</li>
+                        </ul>
+                    </div>
+
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-hand-holding-usd me-2 text-success"></i>
+                            <h5 class="mb-0">Recycling Incentives</h5>
+                        </div>
+                        <ul class="list-unstyled mb-0 ms-4">
+                            <li><i class="fas fa-gift me-2"></i>Reward programs</li>
+                            <li><i class="fas fa-coins me-2"></i>Cash back options</li>
+                            <li><i class="fas fa-leaf me-2"></i>Environmental impact points</li>
+                        </ul>
+                    </div>
+
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-users me-2 text-info"></i>
+                            <h5 class="mb-0">Community Programs</h5>
+                        </div>
+                        <ul class="list-unstyled mb-0 ms-4">
+                            <li><i class="fas fa-hands-helping me-2"></i>Volunteer opportunities</li>
+                            <li><i class="fas fa-university me-2"></i>Educational workshops</li>
+                            <li><i class="fas fa-recycle me-2"></i>Community cleanup events</li>
+                        </ul>
+                    </div>
+
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-book-reader me-2 text-danger"></i>
+                            <h5 class="mb-0">Educational Resources</h5>
+                        </div>
+                        <ul class="list-unstyled mb-0 ms-4">
+                            <li><i class="fas fa-video me-2"></i>Tutorial videos</li>
+                            <li><i class="fas fa-file-pdf me-2"></i>Downloadable guides</li>
+                            <li><i class="fas fa-chalkboard-teacher me-2"></i>Online courses</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                <h2 class="h4 mb-0"><i class="fas fa-history me-2"></i>Classification History</h2>
+                <a href="{{ url_for('clear_history') }}" class="btn btn-sm btn-outline-danger" id="clearHistoryBtn">
+                    <i class="fas fa-trash-alt me-1"></i>Clear
+                </a>
+            </div>
+            <div class="card-body">
+                <div id="historyContent">
+                    <div class="text-center py-5" id="noHistoryMessage">
+                        <i class="fas fa-history display-4 mb-3 text-muted"></i>
+                        <p class="text-muted">Your classification history will appear here</p>
+                    </div>
+                    <ul class="list-group list-group-flush" id="historyList">
+                        <!-- History items will be inserted here by JavaScript -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h2 class="h4 mb-0"><i class="fas fa-lightbulb me-2"></i>Quick Facts</h2>
+            </div>
+            <div class="card-body">
+                <div class="quick-fact mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-leaf text-success me-2"></i>
+                        <h5 class="mb-0">Did you know?</h5>
+                    </div>
+                    <p class="mb-0">Recycling one aluminum can saves enough energy to run a TV for 3 hours.</p>
+                </div>
+
+                <div class="quick-fact mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-water text-primary me-2"></i>
+                        <h5 class="mb-0">Ocean Impact</h5>
+                    </div>
+                    <p class="mb-0">Over 8 million tons of plastic enter our oceans each year, harming marine life.</p>
+                </div>
+
+                <div class="quick-fact">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-recycle text-info me-2"></i>
+                        <h5 class="mb-0">Daily Tip</h5>
+                    </div>
+                    <p class="mb-0" id="dailyTip">Loading daily recycling tip...</p>
+                </div>
+                <script>
+                    fetch('/daily_tip')
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('dailyTip').textContent = data.tip;
+                        });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

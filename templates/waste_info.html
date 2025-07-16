@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Waste Information - Waste Classification App</title>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h2 class="h4 mb-0"><i class="fas fa-search me-2"></i>Search Waste Types</h2>
+            </div>
+            <div class="card-body">
+                <input type="text" id="wasteSearchInput" class="form-control" placeholder="Search for waste types...">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h2 class="h4 mb-0"><i class="fas fa-chart-bar me-2"></i>Classification Stats</h2>
+            </div>
+            <div class="card-body">
+                <canvas id="classificationChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <h2 class="h4 mb-0"><i class="fas fa-info-circle me-2"></i>Waste Classification Guide</h2>
+            </div>
+            <div class="card-body">
+                <p>Understanding how to properly sort and dispose of different types of waste is crucial for effective recycling and waste management. This guide provides information about common waste types, their proper disposal methods, and environmental impact.</p>
+                <p>Select a waste category below to learn more about it.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for waste_type, info in waste_info.items() %}
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-dark d-flex align-items-center">
+                <i class="fas fa-{{ info.icon }} me-2" style="color: var(--bs-{{ info.color }})"></i>
+                <h3 class="h5 mb-0">{{ waste_type }}</h3>
+            </div>
+            <div class="card-body">
+                <h4 class="h6 border-bottom pb-2 mb-3">What is {{ waste_type }} Waste?</h4>
+                <p>{{ info.description }}</p>
+                
+                <h4 class="h6 border-bottom pb-2 mb-3">How to Dispose</h4>
+                <p>{{ info.disposal }}</p>
+                
+                <h4 class="h6 border-bottom pb-2 mb-3">Environmental Impact</h4>
+                <p class="mb-0">{{ info.impact }}</p>
+            </div>
+            <div class="card-footer bg-dark text-end">
+                <span class="badge rounded-pill text-bg-{{ info.color }}">{{ waste_type }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h2 class="h4 mb-0"><i class="fas fa-lightbulb me-2"></i>Tips for Reducing Waste</h2>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-shopping-bag text-success me-2 fa-lg"></i>
+                            <h5 class="mb-0">Use Reusable Bags</h5>
+                        </div>
+                        <p>Bring your own reusable bags when shopping to reduce plastic bag waste.</p>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-mug-hot text-warning me-2 fa-lg"></i>
+                            <h5 class="mb-0">Avoid Single-Use Items</h5>
+                        </div>
+                        <p>Use reusable water bottles, coffee cups, and food containers.</p>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-apple-alt text-danger me-2 fa-lg"></i>
+                            <h5 class="mb-0">Compost Food Scraps</h5>
+                        </div>
+                        <p>Convert food waste into nutrient-rich soil instead of sending it to landfills.</p>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-tshirt text-primary me-2 fa-lg"></i>
+                            <h5 class="mb-0">Donate Usable Items</h5>
+                        </div>
+                        <p>Instead of throwing away clothes, furniture, or electronics, donate them to someone who can use them.</p>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-gift text-info me-2 fa-lg"></i>
+                            <h5 class="mb-0">Choose Minimal Packaging</h5>
+                        </div>
+                        <p>Select products with less packaging or packaging that can be easily recycled.</p>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-tools text-secondary me-2 fa-lg"></i>
+                            <h5 class="mb-0">Repair Before Replacing</h5>
+                        </div>
+                        <p>Try to fix broken items rather than immediately replacing them with new ones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4 mb-3">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-primary">
+            <i class="fas fa-arrow-left me-2"></i>Return to Classifier
+        </a>
+    </div>
+</div>
+{% endblock %}
